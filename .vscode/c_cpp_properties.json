@@ -1,0 +1,32 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "defines": [],
+            "macFrameworkPath": [],
+            "forcedInclude": [],
+            "compilerArgs": [],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        },
+        {
+            "name": "ubuntu",
+            "includePath": [
+                "${default}"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64"
+        }
+    ],
+    "version": 4
+}
