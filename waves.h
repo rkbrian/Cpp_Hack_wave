@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
-#include <limits>
+#include <climits>
 
 namespace reg_note
 {
@@ -20,7 +20,7 @@ namespace reg_note
                 double cycl = time / tpc; // cycle
                 double radian = 2 * PIE * cycl;
                 short amplitude = SHRT_MAX * amplt;
-                ret = amplitude * sin(radian);
+                short ret = amplitude * sin(radian);
                 return ret;
         };
 }
