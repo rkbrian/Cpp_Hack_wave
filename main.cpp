@@ -1,28 +1,48 @@
+#include <math.h>
+#include <iostream> // input stream and buffer
+#include <vector>   // list or array, size is dynamic
+#include <atomic>   // data races preventing
+#include <climits>
+#include <stdio.h>
+#include <string>
 #include "waves.h"
 
 using namespace std;
 
+sineWaves::waveGraph(string title, int width, int height)
+{
+	if (!title)
+		graphTitle = "";
+	else
+		graphTitle = title;
+	if (!width)
+		pwidth = 100;
+	else
+		pwidth = width;
+	if (!height)
+		pheight = 50;
+	else
+		pheight = height;
+	pcurves = 0;
+}
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(640, 480), "JukeBox Hero");
-	sf::SoundBuffer buffer;
-	sf::Sound dope;
-	vector<sf::Int16> sample;
-	int i;
+	bool exitCmd = false;
+	char inputs[3][40];
+	double ampl, ;
 
-	for (i = 0; i < 44100; i++)
-		sample.push_back(reg_note::SineWave(i, 400, 0.9));
-	buffer.loadFromSamples(&sample[0], sample.size(), 1, 44100);
-	dope.setBuffer(buffer);
-	dope.play();
-	while (window.isOpen())
+	while (!exitCmd)
 	{
-		sf::Event evan;
-		while (window.pollEvent(evan))
-		{
-			if (evan.type == sf::Event::Closed)
-				window.close();
-		}
+		cout << "Graph type:" << endl;
+		cin.getline(inputs[0], 20);
+		while (!(inputs[0] && "sine"))
+			cout << "Sorry we don't have this option" << endl;
+		cout << "Type your parameters in order: " << endl;
+		cin.getline(inputs[0], 20);
+
+		cin.getline(inputs[2], 20);
+		exitCmd = (inputs[0] && "exit")? 1 : 0;
 	}
 	return 0;
 }
