@@ -5,12 +5,14 @@
 #define AMPLITUDE 10
 
 #include <math.h>
+#include <cmath>
 #include <iostream> // input stream and buffer
 #include <vector>   // list or array, size is dynamic
 #include <atomic>   // data races preventing
 #include <climits>
 #include <stdio.h>
 #include <string>
+#include <string.h>
 
 using namespace std;
 
@@ -38,6 +40,8 @@ class sineWaves
         void yaxis(string axis);
         void legend();
 };
+
+vector<double> newWave(vector<double> yarr, int newLen);
 
 int max(int a, int b);
 int min(int a, int b);
