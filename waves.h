@@ -29,12 +29,12 @@ class sineWaves
         string yAxis;
         vector<double> xHolder; // data holder for precise x values
         vector<double> yHolder[AMPLITUDE]; // data holder for precise y values
-        string label[AMPLITUDE];
-        ;
+        string axisName[AMPLITUDE];
+        char lineType[AMPLITUDE];
     public:
         waveGraph(string title, int width, int height);
-        void giraffe(const char *plotfile, const char *arrfile);
-        void addGiraffe(vector<double> xarr, vector<double> yarr, string axis, char maker);
+        void giraffe(const char *graphfile, const char *arrfile);
+        void addGiraffe(vector<double> xarr, vector<double> yarr, string myaxisName, char mylineType);
         void printwave();
         void xaxis(string axis);
         void yaxis(string axis);
