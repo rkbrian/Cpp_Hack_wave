@@ -14,6 +14,7 @@
 #include <string>
 #include <string.h>
 #include <sstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -24,32 +25,30 @@ class wavesGraph
         int pwidth;
         int pheight;
         int pcurves;
+        int _lego = 0;
         string graphTitle;
-        bool lege;
-        string xAxis;
-        string yAxis;
+        string xAxe;
+        string yAxe;
         vector<double> xHolder; // data holder for precise x values
         vector<double> yHolder[AMPLITUDE]; // data holder for precise y values
         string axisName[AMPLITUDE];
         char lineType[AMPLITUDE];
     public:
-        waveGraph(string title, int width, int height);
+        void waGraph(string title, int width, int height);
         // void giraffe(const char *graphfile, const char *arrfile);
         void addGiraffe(vector<double> xarr, vector<double> yarr, string myaxisName, char mylineType);
         void printwave();
-        void xaxis(string axis);
-        void yaxis(string axis);
+        void xaxias(string axis);
+        void yaxias(string axis);
         void legendary();
 };
 
 vector<double> newWave(vector<double> yarr, int newLen);
 
-int max(int a, int b);
-int min(int a, int b);
 double max(double a, double b);
 double min(double a, double b);
-int maxv(vector<int> arr);
-int minv(vector<int> arr);
+double maxv(vector<double> arr);
+double minv(vector<double> arr);
 double diffeq(double x, double dxmin, double dymin, double dxmax, double dymax);
 
 #endif // WAVES_H

@@ -1,12 +1,25 @@
 #include "waves.h"
+#include <math.h>
+#include <cmath>
+#include <iostream> // input stream and buffer
+#include <vector>   // list or array, size is dynamic
+#include <atomic>   // data races preventing
+#include <climits>
+#include <stdio.h>
+#include <string>
+#include <string.h>
+#include <sstream>
 
 using namespace std;
 /*
-	wavegraph: setup for default values when inputs are incomplete
+	wagraph: setup for default values when inputs are incomplete
 */
-wavesGraph::waveGraph(string title = "", int width, int height)
+void wavesGraph::waGraph(string title, int width, int height)
 {
-	graphTitle = title;
+	if (title == "")
+		graphTitle = "";
+	else
+		graphTitle = title;
 	if (!width)
 		pwidth = 100;
 	else
@@ -34,7 +47,7 @@ void wavesGraph::addGiraffe(vector<double> xarr, vector<double> yarr, string mya
 */
 void wavesGraph::printwave()
 {
-	int xSize = xHolder.size, margins, buffalo;
+	int xSize = xHolder.size(), margins, buffalo;
 	int i, j, curveArea; // iterations
 	double minX = xHolder[0], maxX = xHolder[xSize - 1];
 	double minY = 1.0e15, maxY = 1.0e-15; // starting values to be adjusted later
@@ -80,12 +93,12 @@ void wavesGraph::printwave()
 	{
 		if (j == pheight / 2)
 		{
-			margins = borderL.length() - yAxis.length();
+			margins = borderL.length() - yAxe.length();
 			if (margins >= 0)
 			{
 				for (i = 0; i < margins - 1; i++)
 					cout << " ";
-				cout << yAxis;
+				cout << yAxe;
 				for (i = margins - 2; i < borderL.length(); i++)
 					cout << " ";
 				cout << "|";
@@ -102,14 +115,14 @@ void wavesGraph::printwave()
 		cout << "=";
 	cout << "#" << endl;
 	printf("%-5.3g", minX); // x ranges and x-axis label
-	buffalo = (pwidth - xAxis.length()) / 2 - 6; // range buffer
+	buffalo = (pwidth - xAxe.length()) / 2 - 6; // range buffer
 	for (i = 0; i < buffalo; i++)
 		cout << " ";
-	cout << xAxis;
+	cout << xAxe;
 	for (i = 0; i < buffalo - 1; i++)
 		cout << " ";
 	printf("%5.3g\n\n", maxX);
-	if (lege) // legend below the graph
+	if (_lego == 1) // legend below the graph
 	{
 		cout << borderL << "+";
 		for (i = 0; i < pwidth; i++)
@@ -130,27 +143,27 @@ void wavesGraph::printwave()
 }
 
 /*
-	xaxis: x axis label
+	xaxias: x axis label
 */
-void xaxis(string axis)
+void wavesGraph::xaxias(string axis)
 {
-	xAxis = axis;
+	xAxe = axis;
 }
 
 /*
-	yaxis: y axis label
+	yaxias: y axis label
 */
-void yaxis(string axis)
+void wavesGraph::yaxias(string axis)
 {
-	yAxis = axis;
+	yAxe = axis;
 }
 
 /*
 	legendary: boolean to decide the needs to print legends
 */
-void legendary()
+void wavesGraph::legendary()
 {
-	lege = true;
+	_lego = 1;
 }
 
 int main()
@@ -159,10 +172,12 @@ int main()
 	int i, aaa = 10, bbb = 1;
 	double dx;
 	char inputs[64], linety[4] = "X*.";
+	char *str, *substr;
 	bool firstin = false;
-	string mytitle, buffalowing, tokbuff;
+	string mytitle, buff, tokbuff;
 	vector<string> tokens;
 	vector<double> datax(101), curvea(101), curveb(101), curvec(101);
+	wavesGraph waverunner;
 
 	cout << "Choose the number of your graph type:\n1 Three-Phase Current Graph" << endl;
 	cout << "2 TBA" << endl;
@@ -176,13 +191,23 @@ int main()
 	}
 	cout << "This option will print three curves. Formula: y = A * sin(B * x)" << endl;
 	cout << "Type your parameters in order: A, B" << endl;
-	cin >> buffalowing;
-	stringstream tokenarr(buffalowing);
-	while (getline(tokenarr, tokbuff, ' '))
-		tokens.push_back(tokbuff);
-	aaa = stoi(tokens[0], nullptr, 0);
-	bbb = stoi(tokens[1], nullptr, 0);
-	wavesGraph waverunner(mytitle, mywidth, myheight); 
+	//cin >> str;
+	//cout << str << endl;
+	/*
+	substr = strtok(str, " ");
+	aaa = stoi(string(substr));
+	cout << aaa << endl;
+	// buff(buffalowing);
+	// stringstream tokenarr(buff);
+	if (substr) //getline(tokenarr, tokbuff, ' '))
+	{
+		substr = strtok(str, " "); // tokens.push_back(tokbuff);
+		bbb = stoi(string(substr));
+	}
+	cout << "debug" << aaa << bbb << endl; //debug
+	*/
+	cout << aaa << bbb << endl; //debug
+	waverunner.waGraph(mytitle, mywidth, myheight); 
 	for (i = 0; i < 101; i++)
 	{
 		if (i != 0)
@@ -191,12 +216,14 @@ int main()
 		curveb[i] = aaa * sin(2 * MYPI * 60.0 * bbb * datax[i] + (MYPI / 3 * 4));
 		curvec[i] = aaa * sin(2 * MYPI * 60.0 * bbb * datax[i]);
 	}
+	cout << aaa << bbb << endl; //debug
+
 	waverunner.addGiraffe(datax, curvea, "Current a", linety[0]);
 	waverunner.addGiraffe(datax, curveb, "Current b", linety[1]);
 	waverunner.addGiraffe(datax, curvec, "Current c", linety[2]);
 	waverunner.legendary();
-	waverunner.xaxis("time (sec)");
-	waverunner.yaxis("I (A)");
+	waverunner.xaxias("time (sec)");
+	waverunner.yaxias("I (A)");
 	waverunner.printwave();
 	return 0;
 }

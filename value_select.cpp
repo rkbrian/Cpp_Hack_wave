@@ -2,23 +2,7 @@
 
 using namespace std;
 /* all the helper functions here */
-int max(int a, int b) // max and min values of integers and floats
-{
-	if (a > b)
-		return a;
-	else
-		return b;
-}
-
-int min(int a, int b)
-{
-	if (a > b)
-		return b;
-	else
-		return a;
-}
-
-double max(double a, double b)
+double max(double a, double b) // max and min values of integers and floats
 {
 	if (a > b)
 		return a;
@@ -34,7 +18,7 @@ double min(double a, double b)
 		return a;
 }
 
-int maxv(vector<int> arr) // max and min values in an array (vector)
+double maxv(vector<double> arr) // max and min values in an array (vector)
 {
 	int i = 1, localMax = arr[0];
 
@@ -46,7 +30,7 @@ int maxv(vector<int> arr) // max and min values in an array (vector)
 	}
 }
 
-int mixv(vector<int> arr)
+double minv(vector<double> arr)
 {
 	int i = 1, localMin = arr[0];
 
