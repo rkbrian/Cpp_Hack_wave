@@ -1,22 +1,12 @@
-#include <math.h>
-#include <iostream> // input stream and buffer
-#include <vector>   // list or array, size is dynamic
-#include <atomic>   // data races preventing
-#include <climits>
-#include <stdio.h>
-#include <string>
 #include "waves.h"
 
 using namespace std;
 /*
 	wavegraph: setup for default values when inputs are incomplete
 */
-sineWaves::waveGraph(string title, int width, int height)
+wavesGraph::waveGraph(string title = "", int width, int height)
 {
-	if (!title)
-		graphTitle = "";
-	else
-		graphTitle = title;
+	graphTitle = title;
 	if (!width)
 		pwidth = 100;
 	else
@@ -28,35 +18,10 @@ sineWaves::waveGraph(string title, int width, int height)
 	pcurves = 0;
 }
 
-vector<double> newWave(vector<double> yarr, int newLen)
-{
-	int oldLen = yarr.size(), oldi, newi = 0;
-	vector<double> newArr(newLen);
-	double xconverter = 1.0; // graph scale converter on x axis
-	double x, y, dxa, dya, dxb, dyb;
-
-	if (newLen == oldLen)
-		return yarr;
-	else
-	{
-		xconverter = (double)oldLen / (double)newLen;
-		while (newi < newLen)
-		{
-			x = (double)newi * xconverter;
-			dxa = floor(x); // the largest possible integer value which is less than or equal to original value
-			dxb = dxa + 1.0;
-			dya = yarr[min(max(0, (int)dxa), oldLen - 1)];
-			dyb = yarr[min(max(0, (int)dxb), oldLen - 1)];
-			y = map(x, dxa, dya, dxb, dyb);
-			newArr[min(max(0, newi), newLen - 1)] = y;
-			newi++;
-		}
-		newArr[0] = yarr[0], newArr[newLen - 1] = yarr[oldLen - 1]; // first and last fixed values
-	}
-	return newArr;
-}
-
-void sineWaves::addGiraffe(vector<double> xarr, vector<double> yarr, string myaxisName = "", char mylineType = ' ')
+/*
+	addGiraffe: setup x and y scale arrays, axis name (label), and curve line type
+*/
+void wavesGraph::addGiraffe(vector<double> xarr, vector<double> yarr, string myaxisName = "", char mylineType = ' ')
 {
 	xHolder = xarr;
 	axisName[pcurves] = myaxisName;
@@ -64,9 +29,12 @@ void sineWaves::addGiraffe(vector<double> xarr, vector<double> yarr, string myax
 	yHolder[pcurves++] = yarr;
 }
 
-void sineWaves::printwave()
+/*
+	printwave: print everything
+*/
+void wavesGraph::printwave()
 {
-	int xSize = xHolder.size, margins;
+	int xSize = xHolder.size, margins, buffalo;
 	int i, j, curveArea; // iterations
 	double minX = xHolder[0], maxX = xHolder[xSize - 1];
 	double minY = 1.0e15, maxY = 1.0e-15; // starting values to be adjusted later
@@ -78,16 +46,16 @@ void sineWaves::printwave()
 	graphBoard.resize(pwidth); // make a blank whiteboard
 	for (i = 0; i < pwidth; i++)
 	{
-		graphBorad[i].resize(pheight);
+		graphBoard[i].resize(pheight);
 		for (j = 0; j < pheight; j++)
 			graphBoard[i][j] = ' ';
 	}
 	for (curveArea = 0; curveArea < pcurves; curveArea++) // max & min y values adjusting
 	{
-		localmax = max(yHolder[curveArea]);
+		localmax = maxv(yHolder[curveArea]);
 		if (localmax > maxY)
 			maxY = localmax;
-		localmin = min(yHolder[curveArea]);
+		localmin = minv(yHolder[curveArea]);
 		if (localmin < minY)
 			minY = localmin;
 	}
@@ -96,32 +64,139 @@ void sineWaves::printwave()
 		newWaveData = newWave(yHolder[curveArea], pwidth);
 		for (i = 0; i < pwidth; i++) // reuse the board iterations
 		{
-			j = (int)map(newWaveData[i], minX, 0.0, maxY, (double)pheight);
-			graphBorad[i][min(max(0, j), pheight - 1)] = lineType[curveArea];
+			j = (int)diffeq(newWaveData[i], minX, 0.0, maxY, (double)pheight);
+			graphBoard[i][min(max(0, j), pheight - 1)] = lineType[curveArea];
 		}
 	}
 	cout << endl; // print the graph title in center
 	for (i = 0; i < borderL.length() - 1 + (pwidth - graphTitle.length()) / 2; i++)
 		cout << " ";
 	cout << graphTitle << endl << endl;
-	// next coming up: graph the curve!!!!!
+	printf(" %5.3g #", maxY); // print graphs
+	for (i = 0; i < pwidth; i++)
+		cout << "=";
+	cout << "#" << endl;
+	for (j = pheight - 1; j >= 0; j--) // print from the highest value to the lowest
+	{
+		if (j == pheight / 2)
+		{
+			margins = borderL.length() - yAxis.length();
+			if (margins >= 0)
+			{
+				for (i = 0; i < margins - 1; i++)
+					cout << " ";
+				cout << yAxis;
+				for (i = margins - 2; i < borderL.length(); i++)
+					cout << " ";
+				cout << "|";
+			}
+		}
+		else
+			cout << borderL << "|";
+		for (i = 0; i < pwidth; i++)
+			cout << graphBoard[i][j];
+		cout << "|" << endl;
+	}
+	printf(" %5.3g #", minY);
+	for (i = 0; i < pwidth; i++)
+		cout << "=";
+	cout << "#" << endl;
+	printf("%-5.3g", minX); // x ranges and x-axis label
+	buffalo = (pwidth - xAxis.length()) / 2 - 6; // range buffer
+	for (i = 0; i < buffalo; i++)
+		cout << " ";
+	cout << xAxis;
+	for (i = 0; i < buffalo - 1; i++)
+		cout << " ";
+	printf("%5.3g\n\n", maxX);
+	if (lege) // legend below the graph
+	{
+		cout << borderL << "+";
+		for (i = 0; i < pwidth; i++)
+			cout << "-";
+		cout << "+" << endl;
+		for (curveArea = 0; curveArea < pcurves; curveArea++)
+		{
+			cout << borderL << "|    " << lineType[curveArea] << " " << axisName[curveArea];
+			for (i = 0; i < (pwidth - 6 - axisName[curveArea].length()); i++)
+				cout << " ";
+			cout << "|" << endl;
+		}
+		cout << borderL << "+";
+		for (i = 0; i < pwidth; i++)
+			cout << "-";
+		cout << "+" << endl;
+	}
+}
+
+/*
+	xaxis: x axis label
+*/
+void xaxis(string axis)
+{
+	xAxis = axis;
+}
+
+/*
+	yaxis: y axis label
+*/
+void yaxis(string axis)
+{
+	yAxis = axis;
+}
+
+/*
+	legendary: boolean to decide the needs to print legends
+*/
+void legendary()
+{
+	lege = true;
 }
 
 int main()
 {
-	int exitCmd = 0;
-	char inputs[20];
+	int exitCmd = 0, mywidth = 120, myheight = 20;
+	int i, aaa = 10, bbb = 1;
+	double dx;
+	char inputs[64], linety[4] = "X*.";
 	bool firstin = false;
+	string mytitle, buffalowing, tokbuff;
+	vector<string> tokens;
+	vector<double> datax(101), curvea(101), curveb(101), curvec(101);
 
-	cout << "Choose your graph type:" << endl;
+	cout << "Choose the number of your graph type:\n1 Three-Phase Current Graph" << endl;
+	cout << "2 TBA" << endl;
+	cout << "3 TBA" << endl;
 	cin >> inputs;
-	while (strcmp(inputs, "sine") != 0)
+	while (strcmp(inputs, "1") != 0)
 	{
 		cout << "Sorry we don't have this option" << endl;
 		cin >> inputs;
+		mytitle = "Three-Phase Current Graph";
 	}
-	cout << "Type your parameters in order: " << endl;
-	cin.getline(inputs, 20);
-	cout << "let me see: " << inputs << endl;
+	cout << "This option will print three curves. Formula: y = A * sin(B * x)" << endl;
+	cout << "Type your parameters in order: A, B" << endl;
+	cin >> buffalowing;
+	stringstream tokenarr(buffalowing);
+	while (getline(tokenarr, tokbuff, ' '))
+		tokens.push_back(tokbuff);
+	aaa = stoi(tokens[0], nullptr, 0);
+	bbb = stoi(tokens[1], nullptr, 0);
+	wavesGraph waverunner(mytitle, mywidth, myheight); 
+	for (i = 0; i < 101; i++)
+	{
+		if (i != 0)
+			datax[i] = datax[i - 1] + dx;
+		curvea[i] = aaa * sin(2 * MYPI * 60.0 * bbb * datax[i] + (MYPI / 3 * 2));
+		curveb[i] = aaa * sin(2 * MYPI * 60.0 * bbb * datax[i] + (MYPI / 3 * 4));
+		curvec[i] = aaa * sin(2 * MYPI * 60.0 * bbb * datax[i]);
+	}
+	waverunner.addGiraffe(datax, curvea, "Current a", linety[0]);
+	waverunner.addGiraffe(datax, curveb, "Current b", linety[1]);
+	waverunner.addGiraffe(datax, curvec, "Current c", linety[2]);
+	waverunner.legendary();
+	waverunner.xaxis("time (sec)");
+	waverunner.yaxis("I (A)");
+	waverunner.printwave();
 	return 0;
 }
