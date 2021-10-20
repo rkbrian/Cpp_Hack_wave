@@ -2,7 +2,23 @@
 
 using namespace std;
 /* all the helper functions here */
-double max(double a, double b) // max and min values of integers and floats
+int maxi(int a, int b) // max and min values of integers and floats
+{
+	if (a > b)
+		return a;
+	else
+		return b;
+}
+
+int mini(int a, int b)
+{
+	if (a > b)
+		return b;
+	else
+		return a;
+}
+
+double max(double a, double b)
 {
 	if (a > b)
 		return a;
@@ -44,9 +60,10 @@ double minv(vector<double> arr)
 
 double diffeq(double x, double dxmin, double dymin, double dxmax, double dymax) // differential calculation
 {
-	double dx = dxmax - dxmin, dy = dymax - dymin;
+	double dx = dxmax - dxmin, dy = dymax - dymin, retval = 1.00000;
 
-	return (x - dxmin) * dy / dx + dymin;
+	retval = (x - dxmin) * dy / dx + dymin;
+	return retval;
 }
 
 vector<double> newWave(vector<double> yarr, int newLen) // function to setup new curves
@@ -64,10 +81,18 @@ vector<double> newWave(vector<double> yarr, int newLen) // function to setup new
 		while (newi < newLen)
 		{
 			x = (double)newi * xconverter;
-			dxa = floor(x); // the largest possible integer value which is less than or equal to original value
+			dxa = round(x); // the largest possible integer value which is less than or equal to original value
 			dxb = dxa + 1.0;
-			dya = yarr[min(max(0, (int)dxa), oldLen - 1)];
-			dyb = yarr[min(max(0, (int)dxb), oldLen - 1)];
+			/*if (dxa - floor(dxa) >= ceil(dxa) - dxa) // yarr[min(maxi(0, round(dxa + 0.5)), oldLen - 1.00)];
+				dya = yarr[ceil(dxa)];
+			else
+				dya = yarr[floor(dxa)];
+			if (dxb - floor(dxb) >= ceil(dxb) - dxb) // yarr[min(maxi(0, round(dxb + 0.5)), oldLen - 1.00)];
+				dyb = yarr[ceil(dxb)];
+			else
+				dyb = yarr[floor(dxb)];*/
+			dya = yarr[round(dxa)];
+			dyb = yarr[round(dxb)];
 			y = diffeq(x, dxa, dya, dxb, dyb);
 			newArr[min(max(0, newi), newLen - 1)] = y;
 			newi++;

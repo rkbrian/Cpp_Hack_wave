@@ -16,10 +16,7 @@ using namespace std;
 */
 void wavesGraph::waGraph(string title, int width, int height)
 {
-	if (title == "")
-		graphTitle = "";
-	else
-		graphTitle = title;
+	graphTitle = title;
 	if (!width)
 		pwidth = 100;
 	else
@@ -47,14 +44,14 @@ void wavesGraph::addGiraffe(vector<double> xarr, vector<double> yarr, string mya
 */
 void wavesGraph::printwave()
 {
-	int xSize = xHolder.size(), margins, buffalo;
+	int margins, buffalo;
 	int i, j, curveArea; // iterations
-	double minX = xHolder[0], maxX = xHolder[xSize - 1];
+	double minX = xHolder[0], maxX = xHolder[xHolder.size() - 1];
 	double minY = 1.0e15, maxY = 1.0e-15; // starting values to be adjusted later
 	double localmax, localmin;
 	vector<double> newWaveData;
 	vector<vector<char>> graphBoard;
-	string borderL = "        ";
+	string borderL = "         ";
 
 	graphBoard.resize(pwidth); // make a blank whiteboard
 	for (i = 0; i < pwidth; i++)
@@ -65,10 +62,10 @@ void wavesGraph::printwave()
 	}
 	for (curveArea = 0; curveArea < pcurves; curveArea++) // max & min y values adjusting
 	{
-		localmax = maxv(yHolder[curveArea]);
+		localmax = ceil(maxv(yHolder[curveArea]));
 		if (localmax > maxY)
 			maxY = localmax;
-		localmin = minv(yHolder[curveArea]);
+		localmin = floor(minv(yHolder[curveArea])) - 1;
 		if (localmin < minY)
 			minY = localmin;
 	}
@@ -77,15 +74,18 @@ void wavesGraph::printwave()
 		newWaveData = newWave(yHolder[curveArea], pwidth);
 		for (i = 0; i < pwidth; i++) // reuse the board iterations
 		{
-			j = (int)diffeq(newWaveData[i], minX, 0.0, maxY, (double)pheight);
-			graphBoard[i][min(max(0, j), pheight - 1)] = lineType[curveArea];
+			j = newWaveData[i];
+			graphBoard[i][j + maxY] = lineType[curveArea]; // bring up everything below 0
 		}
 	}
 	cout << endl; // print the graph title in center
 	for (i = 0; i < borderL.length() - 1 + (pwidth - graphTitle.length()) / 2; i++)
 		cout << " ";
 	cout << graphTitle << endl << endl;
-	printf(" %5.3g #", maxY); // print graphs
+	if (maxY >= 0) // print graphs
+		printf("  %5.3f #", maxY);
+	else
+		printf(" %5.3f #", maxY);
 	for (i = 0; i < pwidth; i++)
 		cout << "=";
 	cout << "#" << endl;
@@ -99,7 +99,7 @@ void wavesGraph::printwave()
 				for (i = 0; i < margins - 1; i++)
 					cout << " ";
 				cout << yAxe;
-				for (i = margins - 2; i < borderL.length(); i++)
+				for (i = margins - 2 + yAxe.length(); i < borderL.length() - 1; i++)
 					cout << " ";
 				cout << "|";
 			}
@@ -110,18 +110,21 @@ void wavesGraph::printwave()
 			cout << graphBoard[i][j];
 		cout << "|" << endl;
 	}
-	printf(" %5.3g #", minY);
+	if (minY < 0)
+		printf(" %5.3f #", minY);
+	else
+		printf("  %5.3f #", minY);
 	for (i = 0; i < pwidth; i++)
 		cout << "=";
-	cout << "#" << endl;
-	printf("%-5.3g", minX); // x ranges and x-axis label
+	cout << "#\n" << borderL;
+	printf("%-5.3f", minX); // x ranges and x-axis label
 	buffalo = (pwidth - xAxe.length()) / 2 - 6; // range buffer
 	for (i = 0; i < buffalo; i++)
 		cout << " ";
 	cout << xAxe;
 	for (i = 0; i < buffalo - 1; i++)
 		cout << " ";
-	printf("%5.3g\n\n", maxX);
+	printf("%5.3f\n\n", maxX);
 	if (_lego == 1) // legend below the graph
 	{
 		cout << borderL << "+";
@@ -170,7 +173,7 @@ int main()
 {
 	int exitCmd = 0, mywidth = 120, myheight = 20;
 	int i, aaa = 10, bbb = 1;
-	double dx;
+	double dx = 0.0002;
 	char inputs[64], linety[4] = "X*.";
 	char *str, *substr;
 	bool firstin = false;
@@ -187,7 +190,6 @@ int main()
 	{
 		cout << "Sorry we don't have this option" << endl;
 		cin >> inputs;
-		mytitle = "Three-Phase Current Graph";
 	}
 	cout << "This option will print three curves. Formula: y = A * sin(B * x)" << endl;
 	cout << "Type your parameters in order: A, B" << endl;
@@ -206,7 +208,7 @@ int main()
 	}
 	cout << "debug" << aaa << bbb << endl; //debug
 	*/
-	cout << aaa << bbb << endl; //debug
+	mytitle = "Three-Phase Current Graph";
 	waverunner.waGraph(mytitle, mywidth, myheight); 
 	for (i = 0; i < 101; i++)
 	{
@@ -216,8 +218,6 @@ int main()
 		curveb[i] = aaa * sin(2 * MYPI * 60.0 * bbb * datax[i] + (MYPI / 3 * 4));
 		curvec[i] = aaa * sin(2 * MYPI * 60.0 * bbb * datax[i]);
 	}
-	cout << aaa << bbb << endl; //debug
-
 	waverunner.addGiraffe(datax, curvea, "Current a", linety[0]);
 	waverunner.addGiraffe(datax, curveb, "Current b", linety[1]);
 	waverunner.addGiraffe(datax, curvec, "Current c", linety[2]);
