@@ -54,6 +54,8 @@ double diffeq(double x, double dxmin, double dymin, double dxmax, double dymax);
 
 /* wave functions! */
 void threewaves(wavesGraph waverunner, int aa, int bb);
-void basewaves(wavesGraph waverunner, int aa, int bb, int cc);
+void basewaves(wavesGraph waverunner, int aa, int bb);
+void interferwave(wavesGraph waverunner, int aa, int bb, int cc, int dd);
+void asciiArtTitle();
 
 #endif // WAVES_H

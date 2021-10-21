@@ -110,10 +110,7 @@ void wavesGraph::printwave()
 			cout << graphBoard[i][j];
 		cout << "|" << endl;
 	}
-	if (minY < 0)
-		printf(" %5.3f #", minY);
-	else
-		printf("  %5.3f #", minY);
+	printf(" %5.3f #", (-1) * maxY);
 	for (i = 0; i < pwidth; i++)
 		cout << "=";
 	cout << "#\n" << borderL;
@@ -172,13 +169,12 @@ void wavesGraph::legendary()
 int main()
 {
 	int exitCmd = 0, mywidth = 120, myheight = 20;
-	int i, aaa = 10, bbb = 1, ccc = 0;
+	int i, aaa = 10, bbb = 1, ccc = 7, ddd = 1;
 	char inputs[10], inputsSec[20];
-	char *str, *substr;
-	string buff, tokbuff;
-	vector<string> tokens;
 	wavesGraph waverunner;
 
+	asciiArtTitle();
+	cout << "<<<< Let's print some sine wave graphs! >>>>\n" << endl;
 	cout << "Choose the number of your graph type:\n1 Basic Sine Wave" << endl;
 	cout << "2 Wave interference" << endl;
 	cout << "3 Three-Phase Current" << endl;
@@ -188,10 +184,31 @@ int main()
 		cout << "Sorry, we don't have this option" << endl;
 		cin >> inputs;
 	}
-	if (strcmp(inputs, "1") == 0)
+	if (strcmp(inputs, "1") == 0) // 1 wave!
 	{
 		cout << "Formula: y = A * sin(B * x + C)" << endl;
-		cout << "Type your integer parameters in order: A, B, C\nA: ";
+		cout << "Type your integer parameters in order: A, B\nA: ";
+		cin >> inputsSec;
+		if (inputsSec != "")
+		{
+			string ininputs(inputsSec);
+			stringstream ss(ininputs);
+			ss >> aaa;
+		}
+		cout << "B: ";
+		cin >> inputsSec;
+		if (inputsSec != "")
+		{
+			string ininputs(inputsSec);
+			stringstream ss(ininputs);
+			ss >> bbb;
+		}
+		basewaves(waverunner, aaa, bbb);
+	}
+	if (strcmp(inputs, "2") == 0) // 2 waves!
+	{
+		cout << "Formula 1: y1 = A * sin(B * x)\nFormula 2: y2 = C * sin(D * x)" << endl;
+		cout << "Type your integer parameters in order: A, B, C, D\nA: ";
 		cin >> inputsSec;
 		if (inputsSec != "")
 		{
@@ -215,9 +232,17 @@ int main()
 			stringstream ss(ininputs);
 			ss >> ccc;
 		}
-		basewaves(waverunner, aaa, bbb, ccc);
+		cout << "D: ";
+		cin >> inputsSec;
+		if (inputsSec != "")
+		{
+			string ininputs(inputsSec);
+			stringstream ss(ininputs);
+			ss >> ddd;
+		}
+		interferwave(waverunner, aaa, bbb, ccc, ddd);
 	}
-	if (strcmp(inputs, "3") == 0)
+	if (strcmp(inputs, "3") == 0) // 3 waves!
 	{
 		cout << "This option will print three curves. Formula: y = A * sin(B * x)" << endl;
 		cout << "Type your integer parameters in order: A, B\nA: ";
