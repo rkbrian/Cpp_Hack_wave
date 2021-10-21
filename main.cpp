@@ -62,7 +62,7 @@ void wavesGraph::printwave()
 	}
 	for (curveArea = 0; curveArea < pcurves; curveArea++) // max & min y values adjusting
 	{
-		localmax = ceil(maxv(yHolder[curveArea]));
+		localmax = ceil(maxv(yHolder[curveArea])) + 1;
 		if (localmax > maxY)
 			maxY = localmax;
 		localmin = floor(minv(yHolder[curveArea])) - 1;
@@ -75,7 +75,7 @@ void wavesGraph::printwave()
 		for (i = 0; i < pwidth; i++) // reuse the board iterations
 		{
 			j = newWaveData[i];
-			graphBoard[i][j + maxY] = lineType[curveArea]; // bring up everything below 0
+			graphBoard[i][(j + maxY) * 10 / maxY] = lineType[curveArea]; // bring up everything below 0
 		}
 	}
 	cout << endl; // print the graph title in center
@@ -117,7 +117,7 @@ void wavesGraph::printwave()
 	for (i = 0; i < pwidth; i++)
 		cout << "=";
 	cout << "#\n" << borderL;
-	printf("%-5.3f", minX); // x ranges and x-axis label
+	printf("  %-5.3f", minX); // x ranges and x-axis label
 	buffalo = (pwidth - xAxe.length()) / 2 - 6; // range buffer
 	for (i = 0; i < buffalo; i++)
 		cout << " ";
@@ -172,58 +172,71 @@ void wavesGraph::legendary()
 int main()
 {
 	int exitCmd = 0, mywidth = 120, myheight = 20;
-	int i, aaa = 10, bbb = 1;
-	double dx = 0.0002;
-	char inputs[64], linety[4] = "X*.";
+	int i, aaa = 10, bbb = 1, ccc = 0;
+	char inputs[10], inputsSec[20];
 	char *str, *substr;
-	bool firstin = false;
-	string mytitle, buff, tokbuff;
+	string buff, tokbuff;
 	vector<string> tokens;
-	vector<double> datax(101), curvea(101), curveb(101), curvec(101);
 	wavesGraph waverunner;
 
-	cout << "Choose the number of your graph type:\n1 Three-Phase Current Graph" << endl;
-	cout << "2 TBA" << endl;
-	cout << "3 TBA" << endl;
+	cout << "Choose the number of your graph type:\n1 Basic Sine Wave" << endl;
+	cout << "2 Wave interference" << endl;
+	cout << "3 Three-Phase Current" << endl;
 	cin >> inputs;
-	while (strcmp(inputs, "1") != 0)
+	while (strcmp(inputs, "1") != 0 && strcmp(inputs, "2") != 0 && strcmp(inputs, "3") != 0)
 	{
-		cout << "Sorry we don't have this option" << endl;
+		cout << "Sorry, we don't have this option" << endl;
 		cin >> inputs;
 	}
-	cout << "This option will print three curves. Formula: y = A * sin(B * x)" << endl;
-	cout << "Type your parameters in order: A, B" << endl;
-	//cin >> str;
-	//cout << str << endl;
-	/*
-	substr = strtok(str, " ");
-	aaa = stoi(string(substr));
-	cout << aaa << endl;
-	// buff(buffalowing);
-	// stringstream tokenarr(buff);
-	if (substr) //getline(tokenarr, tokbuff, ' '))
+	if (strcmp(inputs, "1") == 0)
 	{
-		substr = strtok(str, " "); // tokens.push_back(tokbuff);
-		bbb = stoi(string(substr));
+		cout << "Formula: y = A * sin(B * x + C)" << endl;
+		cout << "Type your integer parameters in order: A, B, C\nA: ";
+		cin >> inputsSec;
+		if (inputsSec != "")
+		{
+			string ininputs(inputsSec);
+			stringstream ss(ininputs);
+			ss >> aaa;
+		}
+		cout << "B: ";
+		cin >> inputsSec;
+		if (inputsSec != "")
+		{
+			string ininputs(inputsSec);
+			stringstream ss(ininputs);
+			ss >> bbb;
+		}
+		cout << "C: ";
+		cin >> inputsSec;
+		if (inputsSec != "")
+		{
+			string ininputs(inputsSec);
+			stringstream ss(ininputs);
+			ss >> ccc;
+		}
+		basewaves(waverunner, aaa, bbb, ccc);
 	}
-	cout << "debug" << aaa << bbb << endl; //debug
-	*/
-	mytitle = "Three-Phase Current Graph";
-	waverunner.waGraph(mytitle, mywidth, myheight); 
-	for (i = 0; i < 101; i++)
+	if (strcmp(inputs, "3") == 0)
 	{
-		if (i != 0)
-			datax[i] = datax[i - 1] + dx;
-		curvea[i] = aaa * sin(2 * MYPI * 60.0 * bbb * datax[i] + (MYPI / 3 * 2));
-		curveb[i] = aaa * sin(2 * MYPI * 60.0 * bbb * datax[i] + (MYPI / 3 * 4));
-		curvec[i] = aaa * sin(2 * MYPI * 60.0 * bbb * datax[i]);
+		cout << "This option will print three curves. Formula: y = A * sin(B * x)" << endl;
+		cout << "Type your integer parameters in order: A, B\nA: ";
+		cin >> inputsSec;
+		if (inputsSec != "")
+		{
+			string ininputs(inputsSec);
+			stringstream ss(ininputs);
+			ss >> aaa;
+		}
+		cout << "B: ";
+		cin >> inputsSec;
+		if (inputsSec != "")
+		{
+			string ininputs(inputsSec);
+			stringstream ss(ininputs);
+			ss >> bbb;
+		}
+		threewaves(waverunner, aaa, bbb);
 	}
-	waverunner.addGiraffe(datax, curvea, "Current a", linety[0]);
-	waverunner.addGiraffe(datax, curveb, "Current b", linety[1]);
-	waverunner.addGiraffe(datax, curvec, "Current c", linety[2]);
-	waverunner.legendary();
-	waverunner.xaxias("time (sec)");
-	waverunner.yaxias("I (A)");
-	waverunner.printwave();
 	return 0;
 }

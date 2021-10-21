@@ -44,7 +44,6 @@ class wavesGraph
 };
 
 vector<double> newWave(vector<double> yarr, int newLen);
-
 int maxi(int a, int b);
 int mini(int a, int b);
 double max(double a, double b);
@@ -52,5 +51,9 @@ double min(double a, double b);
 double maxv(vector<double> arr);
 double minv(vector<double> arr);
 double diffeq(double x, double dxmin, double dymin, double dxmax, double dymax);
+
+/* wave functions! */
+void threewaves(wavesGraph waverunner, int aa, int bb);
+void basewaves(wavesGraph waverunner, int aa, int bb, int cc);
 
 #endif // WAVES_H

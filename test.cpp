@@ -6,24 +6,26 @@
 #include <stdio.h>
 #include <string>
 #include <string.h>
+#include <sstream>
 
 using namespace std;
 
 int main()
 {
-        int exitCmd = 0;
-	char inputs[20];
-        bool firstin = false;
+        int exitCmd = 0, aaa, bbb;
+	char firstthing[40], inputs[40];
+	// string ininputs(inputs);
 
+	cin >> firstthing;
 	cout << "Graph type:" << endl;
-	cin >> inputs;
-	while (strcmp(inputs, "sine") != 0)
-        {
-		cout << "Sorry we don't have this option" << endl;
-		cin.getline(inputs, 20);
-        }
         cout << "Type your parameters in order: " << endl;
-	cin.getline(inputs, 20);
-	cout << "let me see: " << inputs << endl;
+	cin.getline(inputs, 40);
+	string ininputs(inputs);
+	cout << "let me see: " << ininputs << endl;
+	stringstream ss(ininputs);
+	ss >> aaa >> bbb;
+	aaa = aaa * 10, bbb = bbb + 36;
+	cout << aaa << endl;
+	cout << bbb << endl;
 	return 0;
 }
