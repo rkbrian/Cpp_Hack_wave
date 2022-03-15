@@ -1,8 +1,10 @@
 # Hack Week in C++
-Design and develop a C++ application for the theme: Waves
+Design and develop a C++ application for the theme: Waves. 10-day project (from 10-11-2021 to 10-21-2021) for Holberton School.
 
 ## Project Developer
-**[Brian Kong](https://github.com/rkbrian)**
+**[Brian Kong](https://github.com/rkbrian)** - software engineer, learning to code at Holberton School since Jan, 2021, specialization and passion in Low Level & Algorithms.\
+LinkedIn: https://www.linkedin.com/in/ran-kong/ \
+Email: rkbriankong@gmail.com
 
 ## Design Purpose:
 This application is an analytical tool for the study of sine wave graphs in trigonometry and physics. It takes inputs as the function parameters and print the graph in ascii art according to them. There are 3 graph options available.
