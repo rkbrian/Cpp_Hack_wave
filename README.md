@@ -1,6 +1,9 @@
 # Hack Week in C++
 Design and develop a C++ application for the theme: Waves
 
+## Project Developer
+**[Brian Kong](https://github.com/rkbrian)**
+
 ## Design Purpose:
 This application is an analytical tool for the study of sine wave graphs in trigonometry and physics. It takes inputs as the function parameters and print the graph in ascii art according to them. There are 3 graph options available.
 

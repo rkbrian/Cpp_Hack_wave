@@ -83,14 +83,6 @@ vector<double> newWave(vector<double> yarr, int newLen) // function to setup new
 			x = (double)newi * xconverter;
 			dxa = round(x); // the largest possible integer value which is less than or equal to original value
 			dxb = dxa + 1.0;
-			/*if (dxa - floor(dxa) >= ceil(dxa) - dxa) // yarr[min(maxi(0, round(dxa + 0.5)), oldLen - 1.00)];
-				dya = yarr[ceil(dxa)];
-			else
-				dya = yarr[floor(dxa)];
-			if (dxb - floor(dxb) >= ceil(dxb) - dxb) // yarr[min(maxi(0, round(dxb + 0.5)), oldLen - 1.00)];
-				dyb = yarr[ceil(dxb)];
-			else
-				dyb = yarr[floor(dxb)];*/
 			dya = yarr[round(dxa)];
 			dyb = yarr[round(dxb)];
 			y = diffeq(x, dxa, dya, dxb, dyb);

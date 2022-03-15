@@ -18,9 +18,9 @@
 
 using namespace std;
 
-class wavesGraph
+class wavesGraph // class method to store all parameters 
 {
-	private:
+	private: // private parameters
 		static const char noGraph[10];
         int pwidth;
         int pheight;
@@ -33,9 +33,8 @@ class wavesGraph
         vector<double> yHolder[AMPLITUDE]; // data holder for precise y values
         string axisName[AMPLITUDE];
         char lineType[AMPLITUDE];
-    public:
+    public: // public variables and functions
         void waGraph(string title, int width, int height);
-        // void giraffe(const char *graphfile, const char *arrfile);
         void addGiraffe(vector<double> xarr, vector<double> yarr, string myaxisName, char mylineType);
         void printwave();
         void xaxias(string axis);
@@ -44,12 +43,12 @@ class wavesGraph
 };
 
 vector<double> newWave(vector<double> yarr, int newLen);
-int maxi(int a, int b);
-int mini(int a, int b);
-double max(double a, double b);
-double min(double a, double b);
-double maxv(vector<double> arr);
-double minv(vector<double> arr);
+int maxi(int a, int b); // max value of 2 integers
+int mini(int a, int b); // min value of 2 integers
+double max(double a, double b); // max value of 2 doubles
+double min(double a, double b); // min value of 2 doubles
+double maxv(vector<double> arr); // max value in an array (vector)
+double minv(vector<double> arr);// min value in an array (vector)
 double diffeq(double x, double dxmin, double dymin, double dxmax, double dymax);
 
 /* wave functions! */

@@ -1,6 +1,7 @@
 #include "waves.h"
 
 using namespace std;
+/* Functions to make curve data of the waves*/
 /* three waves of current */
 void threewaves(wavesGraph waverunner, int aa = 0, int bb = 0)
 {
@@ -59,7 +60,7 @@ void basewaves(wavesGraph waverunner, int aa = 0, int bb = 0)
 	waverunner.printwave();
 }
 
-/* three waves of current */
+/* wave interference */
 void interferwave(wavesGraph waverunner, int aa = 0, int bb = 0, int cc = 0, int dd = 0)
 {
 	int i, mywidth = 120, myheight = 20, aaa = 10, bbb = 1, ccc = 7, ddd = 1;
